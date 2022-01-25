@@ -16,7 +16,17 @@ const io = new Server(server, {
 });
 
 io.on('connection', socket => {
+    console.log(`User Connected: ${socket.id}`);
 
+    socket.on('join_presentation', data => {
+        socket.join(data);
+        console.log(`User Joined Presentation: ${socket.id}; ${data}`)
+    });
+    
+    socket.on('set_next_slide', data => {
+        socket.broadcast.emit('next_slide', data);
+        console.log(`Changed slide to: ${data}`);
+    });
 });
 
 server.listen(3004, () => {
